@@ -1,8 +1,8 @@
-# [your app name here]
+# Royal Flush
 
 CodePath WEB103 Final Project
 
-Designed and developed by: [your names here]
+Designed and developed by: John Ortega, Shivesh Gupta, Christopher Persaud, Huyen Huynh
 
 🔗 Link to deployed app:
 
