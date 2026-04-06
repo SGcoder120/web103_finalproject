@@ -15,7 +15,7 @@ This unit, be sure to complete all tasks listed below. To complete a task, place
 - [x] In `readme.md`: list a name and description for all features (minimum 6 for full points) you intend to include in your app (in future units, you will check off features as you complete them and add GIFs demonstrating the features)
 - [x] In `planning/user_stories.md`: add all user stories (minimum 10 for full points)
 - [x] In `planning/user_stories.md`: use 1-3 unique user roles in your user stories
-- [x] In this document, complete all thre questions in the **Reflection** section below
+- [x] In this document, complete all three questions in the **Reflection** section below
 
 ## Reflection
 
