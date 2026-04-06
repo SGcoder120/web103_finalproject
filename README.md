@@ -10,7 +10,9 @@ Designed and developed by: John Ortega, Shivesh Gupta, Christopher Persaud, Huye
 
 ### Description and Purpose
 
-[text goes here]
+Royal Flush is a web application that helps users quickly locate nearby public restrooms using a public API. Beyond just finding restrooms, the app allows users to rate, review, and rank bathrooms based on cleanliness, accessibility, amenities, and overall experience.
+
+The purpose of Royal Flush is to solve a very real, everyday problem—finding a reliable, clean restroom when you’re out. Many existing maps show locations, but they don’t tell you which bathroom is actually worth using.
 
 ### Inspiration
 
