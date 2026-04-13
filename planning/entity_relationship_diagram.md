@@ -4,14 +4,12 @@ Reference the Creating an Entity Relationship Diagram final project guide in the
 
 ## Create the List of Tables
 
-[👉🏾👉🏾👉🏾 List each table in your diagram]
+- User Table -  Stores account information for registered users
+- Restroom Table -  Stores restroom data cached from the external public API.
+- Review Table - Stores users' rating, reviews, etc
+- Favorite Table - Stores user' restroom bookmarks
+- Image Table -  Stores image URLs tied to a specific review
 
 ## Add the Entity Relationship Diagram
 
-[👉🏾👉🏾👉🏾 Include an image or images of the diagram below. You may also wish to use the following markdown syntax to outline each table, as per your preference.]
-
-| Column Name | Type | Description |
-|-------------|------|-------------|
-| id | integer | primary key |
-| name | text | name of the shoe model |
-| ... | ... | ... |
+![alt text](image.png)
