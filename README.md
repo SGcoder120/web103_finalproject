@@ -30,7 +30,7 @@ Backend: Node.js, Express.js
 
 Based on the users current location, the app fetches and locates all of the nearest public bathrooms in the area.
 
-[gif goes here]
+https://imgur.com/a/web-103-restroom-find-feature-coaMME3
 
 ### User Reviews & Rating
 
@@ -63,8 +63,6 @@ Allows users to create accounts, log in, and manage their reviews, ensuring acco
 Lets users save frequently used or highly rated restrooms for quick access later, improving convenience for repeat visits.
 
 [Insert GIF of favoriting/bookmarking feature here]
-
-
 
 ## Installation Instructions
 
