@@ -22,20 +22,20 @@ You will need to reference the GitHub Project Management guide in the course por
 
 ### 1. What went well during this unit?
 
-[👉🏾👉🏾👉🏾 your answer here]
+During this unit we were able to properly communicate a timeline for implementing the project and its core features.
 
 ### 2. What were some challenges your group faced in this unit?
 
-[👉🏾👉🏾👉🏾 your answer here]
+We had to figure out how to structure our timelines which was a bit of a hassle but in the end we did it.
 
 ### Did you finish all of your tasks in your sprint plan for this week? If you did not finish all of the planned tasks, how would you prioritize the remaining tasks on your list?
 
-[👉🏾👉🏾👉🏾 your answer here]
+We didn't finish them all. We will prioritize finishing the remaining tasks by splitting our work up evenly and contributing our given tasks.
 
 ### Which features and user stories would you consider “at risk”? How will you change your plan if those items remain “at risk”?
 
-[👉🏾👉🏾👉🏾 your answer here]
+None of the features are necceessarily at risk, however we would say that the user authentication will be slightly at risk because we haven't properly discussed it during this course. But if it came down to it we will just get rid of user auth and just store names in local storage.
 
 ### 5. What additional support will you need in upcoming units as you continue to work on your final project?
 
-[👉🏾👉🏾👉🏾 your answer here]
+None for the moment.
