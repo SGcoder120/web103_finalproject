@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import { locationOptions, getSampleRestroomsForLocation } from './data';
+import MapView from './components/MapView';
 
 function App() {
   const [location, setLocation] = useState(null);
@@ -96,6 +97,11 @@ function App() {
             ))}
           </select>
         </form>
+
+        <div>
+          <h1 style={{color: 'black', fontSize: '20px', fontWeight: 'bold'}}>MAP VIEW</h1>
+          <MapView/>
+        </div>
 
         <div className="results-summary">
           {loading ? 'Loading restrooms...' : `${restrooms.length} nearby restrooms found`}

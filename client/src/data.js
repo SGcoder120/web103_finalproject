@@ -6,9 +6,9 @@ export const locationOptions = [
 ];
 
 export const sampleRestroomsByLocation = {
-  austin: [
+  "austin": [
     {
-      name: 'Lavender Lounge',
+      name: 'Lavender Loungess',
       street: '201 East 6th St',
       accessible: true,
       unisex: false,
