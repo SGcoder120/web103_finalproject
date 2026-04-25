@@ -1,0 +1,252 @@
+.reviews-page .results-grid {
+  margin-top: 18px;
+}
+
+.reviews-page .brand-title {
+  margin: 0;
+  color: #d9bb7d;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  line-height: 1;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.reviews-page .brand-subtitle {
+  margin: 6px 0 0;
+  color: #4b4b55;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.reviews-loading {
+  color: #cfcfd4;
+  font-weight: 600;
+}
+
+.location-overview-card {
+  margin-bottom: 18px;
+}
+
+.location-overview-summary {
+  color: #c6c6cb;
+  margin: 10px 0 0;
+}
+
+.location-overview-actions {
+  margin-top: 18px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.review-card {
+  display: grid;
+  gap: 10px;
+}
+
+.review-header {
+  display: grid;
+  gap: 6px;
+}
+
+.review-username {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.review-stars-readonly {
+  margin-top: 0;
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.review-stars-row {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.star {
+  color: #5b5b60;
+  font-size: 24px;
+}
+
+.star.is-filled {
+  color: #d9bb7d;
+}
+
+.review-score {
+  margin-left: 8px;
+  font-size: 13px;
+  color: #a8a8ae;
+}
+
+.review-owner-actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 10px;
+}
+
+.review-image-grid {
+  margin-top: 4px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.review-image {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid rgba(195, 160, 92, 0.4);
+}
+
+.existing-images-section {
+  margin-bottom: 4px;
+}
+
+.editable-image-card {
+  display: grid;
+  gap: 8px;
+}
+
+.review-image-remove-btn {
+  width: 100%;
+}
+
+.review-action-btn {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: #232326;
+  color: #f0f0f2;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.review-action-btn:hover:not(:disabled) {
+  border-color: rgba(195, 160, 92, 0.5);
+  color: #f0dca7;
+}
+
+.review-action-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.review-action-btn--primary {
+  border-color: rgba(195, 160, 92, 0.7);
+  color: #f0dca7;
+  background: rgba(195, 160, 92, 0.12);
+}
+
+.review-action-btn--danger {
+  border-color: rgba(196, 77, 77, 0.6);
+  color: #ffb6b6;
+  background: rgba(196, 77, 77, 0.12);
+}
+
+.review-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: grid;
+  place-items: center;
+  z-index: 20;
+  padding: 16px;
+}
+
+.review-modal {
+  background: #121214;
+  border: 1px solid rgba(195, 160, 92, 0.4);
+  border-radius: 16px;
+  padding: 20px;
+  width: min(92vw, 480px);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.45);
+}
+
+.review-modal h3 {
+  margin: 0 0 14px;
+  color: #f4f4f6;
+}
+
+.review-form {
+  display: grid;
+  gap: 8px;
+}
+
+.review-form label {
+  color: #c6c6cb;
+  font-size: 13px;
+}
+
+.review-form input,
+.review-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #323238;
+  background: #1a1a1d;
+  color: #f0f0f2;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-family: inherit;
+}
+
+.review-form input:focus,
+.review-form textarea:focus {
+  outline: none;
+  border-color: #d9bb7d;
+}
+
+.review-stars-input {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.star-button {
+  border: none;
+  background: transparent;
+  color: #5b5b60;
+  font-size: 34px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+}
+
+.star-button.is-filled {
+  color: #d9bb7d;
+}
+
+.selected-rating-label {
+  margin: 0 0 6px;
+  color: #acacb3;
+  font-size: 12px;
+  text-align: center;
+}
+
+.review-modal-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.review-form textarea {
+  resize: none;
+  min-height: 112px;
+  max-height: 112px;
+  width: 100%;
+  box-sizing: border-box;
+}
