@@ -149,6 +149,14 @@ export default {
     }
 
     try {
+      const existingReview = await pool.query(
+        'SELECT id FROM reviews WHERE user_id = $1 AND location_id = $2',
+        [userId, locationId]
+      )
+      if (existingReview.rows[0]) {
+        return res.status(409).json({ message: 'You have already reviewed this location' })
+      }
+
       const uploadedImageUrls = (req.files || []).map(
         (file) => `${req.protocol}://${req.get('host')}/uploads/${file.filename}`
       )
@@ -162,6 +170,9 @@ export default {
       )
       return res.status(201).json(result.rows[0])
     } catch (error) {
+      if (error.code === '23505') {
+        return res.status(409).json({ message: 'You have already reviewed this location' })
+      }
       console.error('Error creating review:', error)
       return res.status(500).json({ message: 'Failed to create review' })
     }

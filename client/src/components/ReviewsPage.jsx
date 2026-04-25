@@ -37,6 +37,8 @@ export default function ReviewsPage({ user, onUserChange }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locationId]);
 
+  const userReview = user ? reviews.find((review) => review.user_id === user.id) : null;
+
   const openCreateModal = () => {
     setEditingReviewId(null);
     setForm({ rating: 0, description: '', imageFiles: [], existingImageUrls: [] });
@@ -112,6 +114,12 @@ export default function ReviewsPage({ user, onUserChange }) {
     window.location.href = authApi.githubLoginUrl;
   };
 
+  useEffect(() => {
+    if (!showModal || loading || !user) return;
+    if (editingReviewId || !userReview) return;
+    openEditModal(userReview);
+  }, [showModal, loading, user, userReview, editingReviewId]);
+
   const remainingImageSlots = Math.max(0, 2 - form.existingImageUrls.length);
 
   return (
@@ -145,8 +153,12 @@ export default function ReviewsPage({ user, onUserChange }) {
             </p>
             <div className="location-overview-actions">
               {user ? (
-                <button type="button" onClick={openCreateModal} className="review-action-btn review-action-btn--primary">
-                  Leave a review
+                <button
+                  type="button"
+                  onClick={userReview ? () => openEditModal(userReview) : openCreateModal}
+                  className="review-action-btn review-action-btn--primary"
+                >
+                  {userReview ? 'Edit your review' : 'Leave a review'}
                 </button>
               ) : (
                 <button type="button" onClick={goToGithubAuth} className="review-action-btn review-action-btn--primary">

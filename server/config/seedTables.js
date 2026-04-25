@@ -55,6 +55,10 @@ const seedReviewsTable = async () => {
         is_edited BOOLEAN NOT NULL DEFAULT FALSE
       );
     `)
+    await pool.query(`
+      CREATE UNIQUE INDEX IF NOT EXISTS reviews_user_location_unique_idx
+      ON reviews (user_id, location_id);
+    `)
     console.log('Reviews table created successfully.')
   } catch (error) {
     console.log('Error seeding reviews table:', error)
