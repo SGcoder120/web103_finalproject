@@ -41,6 +41,11 @@ function App() {
   const [favorites, setFavorites] = useState([]);
   const [favoriteLoadingId, setFavoriteLoadingId] = useState(null);
   const [ratingsReady, setRatingsReady] = useState(false);
+  const [filters, setFilters] = useState({
+    searchText: '',
+    maxDistance: 'all',
+    minRating: 'all',
+  });
   const syncDebounceRef = useRef(null);
 
   useEffect(() => {
@@ -212,8 +217,29 @@ function App() {
     [locationIdByPlaceId, restrooms, reviewSummaryByLocation]
   );
 
+  const filteredRestroomsWithMetadata = useMemo(() => {
+    return restroomsWithMetadata.filter((restroom) => {
+      const matchesSearch =
+        !filters.searchText ||
+        `${restroom.name || ''} ${restroom.address || ''}`
+          .toLowerCase()
+          .includes(filters.searchText.toLowerCase());
+
+      const matchesDistance =
+        filters.maxDistance === 'all' ||
+        Number(restroom.distanceMiles) <= Number(filters.maxDistance);
+
+      const matchesRating =
+        filters.minRating === 'all' ||
+        (restroom.summary?.average_rating != null &&
+          Number(restroom.summary.average_rating) >= Number(filters.minRating));
+
+      return matchesSearch && matchesDistance && matchesRating;
+    });
+  }, [filters, restroomsWithMetadata]);
+
   const rankedRestrooms = useMemo(() => {
-    return restroomsWithMetadata
+    return filteredRestroomsWithMetadata
       .filter((restroom) => restroom.summary?.average_rating != null && restroom.summary?.review_count > 0)
       .map((restroom) => ({
         ...restroom,
@@ -230,7 +256,7 @@ function App() {
         ...restroom,
         rank: index + 1,
       }));
-  }, [restroomsWithMetadata]);
+  }, [filteredRestroomsWithMetadata]);
 
   const topRankedRestrooms = useMemo(
     () => rankedRestrooms.slice(0, 3),
@@ -344,11 +370,72 @@ function App() {
           </form>
         </div>
 
+        <div className="preference-filters">
+          <div className="preference-filter-header">
+            <div>
+              <p className="ranking-eyebrow">Bathroom preferences</p>
+              <h2 className="preference-filter-title">Filter by what matters to you</h2>
+            </div>
+            <button
+              type="button"
+              className="preference-reset-btn"
+              onClick={() =>
+                setFilters({
+                  searchText: '',
+                  maxDistance: 'all',
+                  minRating: 'all',
+                })
+              }
+            >
+              Reset filters
+            </button>
+          </div>
+
+          <div className="preference-filter-grid">
+            <label className="preference-filter-field">
+              <span>Name or location</span>
+              <input
+                type="text"
+                value={filters.searchText}
+                onChange={(event) => setFilters((prev) => ({ ...prev, searchText: event.target.value }))}
+                placeholder="Search by name, street, or area"
+              />
+            </label>
+
+            <label className="preference-filter-field">
+              <span>Distance</span>
+              <select
+                value={filters.maxDistance}
+                onChange={(event) => setFilters((prev) => ({ ...prev, maxDistance: event.target.value }))}
+              >
+                <option value="all">Any distance</option>
+                <option value="0.5">Within 0.5 miles</option>
+                <option value="1">Within 1 mile</option>
+                <option value="2">Within 2 miles</option>
+              </select>
+            </label>
+
+            <label className="preference-filter-field">
+              <span>Minimum rating</span>
+              <select
+                value={filters.minRating}
+                onChange={(event) => setFilters((prev) => ({ ...prev, minRating: event.target.value }))}
+              >
+                <option value="all">Any rating</option>
+                <option value="4.5">4.5 and up</option>
+                <option value="4">4.0 and up</option>
+                <option value="3">3.0 and up</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
         <div>
           <h1 style={{color: 'black', fontSize: '20px', fontWeight: 'bold'}}>MAP VIEW</h1>
           <MapView
             userLocation={location}
             onPlacesFound={handleMapPlacesFound}
+            visiblePlaceIds={filteredRestroomsWithMetadata.map((restroom) => restroom.placeId)}
             locationIdByPlaceId={locationIdByPlaceId}
             reviewSummaryByLocation={reviewSummaryByLocation}
             favoriteLocationIds={favoriteLocationIds}
@@ -371,7 +458,7 @@ function App() {
               ? 'Loading restrooms...'
               : restrooms.length > 0 && !ratingsReady
                 ? 'Loading community ratings...'
-              : `${restrooms.length} nearby restrooms found`}
+              : `${filteredRestroomsWithMetadata.length} bathrooms match your filters`}
         </div>
       </section>
 
@@ -449,7 +536,7 @@ function App() {
           )}
 
           <section className="results-grid">
-            {restroomsWithMetadata.map((restroom, index) => {
+            {filteredRestroomsWithMetadata.map((restroom, index) => {
               const isFavorited = restroom.locationId ? favoriteLocationIds.includes(restroom.locationId) : false;
               const ranking = restroom.locationId
                 ? rankedRestrooms.find((rankedRestroom) => rankedRestroom.locationId === restroom.locationId)
@@ -509,6 +596,13 @@ function App() {
               );
             })}
           </section>
+          {filteredRestroomsWithMetadata.length === 0 && (
+            <section className="saved-restrooms-panel">
+              <div className="saved-restrooms-empty">
+                No bathrooms match these preferences yet. Try widening the distance or lowering the rating filter.
+              </div>
+            </section>
+          )}
         </>
       )}
     </div>

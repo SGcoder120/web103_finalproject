@@ -116,6 +116,78 @@
   margin-bottom: 28px;
 }
 
+.preference-filters {
+  width: min(100%, 880px);
+  margin: 18px auto 0;
+  padding: 18px 20px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, #fbfbfc 0%, #ececf0 100%);
+  border: 1px solid rgba(31, 31, 37, 0.08);
+  box-shadow: 0 10px 22px rgba(20, 20, 24, 0.08);
+}
+
+.preference-filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.preference-filter-title {
+  margin: 0;
+  color: #23232c;
+  font-size: 1.35rem;
+}
+
+.preference-reset-btn {
+  border: 1px solid rgba(35, 35, 44, 0.12);
+  background: white;
+  color: #23232c;
+  border-radius: 999px;
+  padding: 9px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.preference-filter-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.preference-filter-field {
+  display: grid;
+  gap: 8px;
+}
+
+.preference-filter-field span {
+  color: #4b4b55;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.preference-filter-field input,
+.preference-filter-field select {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid rgba(35, 35, 44, 0.14);
+  background: #ffffff;
+  color: #23232c;
+  border-radius: 14px;
+  padding: 11px 12px;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.preference-filter-field input:focus,
+.preference-filter-field select:focus {
+  outline: none;
+  border-color: #d9bb7d;
+}
+
 .location-controls {
   display: flex;
   flex-wrap: wrap;
@@ -527,6 +599,15 @@
 
   .location-controls {
     flex-direction: column;
+  }
+
+  .preference-filter-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .preference-filter-grid {
+    grid-template-columns: 1fr;
   }
 
   .ranking-panel-header,

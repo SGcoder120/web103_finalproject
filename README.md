@@ -48,7 +48,7 @@ Aggregates user feedback to rank restrooms, highlighting the best and worst opti
 
 ### Filter Bathrooms by preference
 
-Allow for users to filter bathrooms by specific preferences such as distance, location, height of stalls, etc..
+Allow for users to filter bathrooms by specific preferences such as distance, location, etc..
 
 [gif goes here]
 

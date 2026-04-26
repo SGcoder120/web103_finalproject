@@ -23,6 +23,7 @@ function renderStars(averageRating) {
 export default function MapView({
   userLocation,
   onPlacesFound,
+  visiblePlaceIds,
   locationIdByPlaceId,
   reviewSummaryByLocation,
   favoriteLocationIds,
@@ -37,6 +38,8 @@ export default function MapView({
   const [map, setMap] = useState(null);
   const [showNoNearbyMessage, setShowNoNearbyMessage] = useState(false);
   const mapCenter = userLocation || defaultCenter;
+  const shouldFilterVisiblePlaces = Array.isArray(visiblePlaceIds);
+  const visiblePlaceIdSet = new Set(visiblePlaceIds || []);
 
   const { isLoaded, loadError } = useJsApiLoader({
     id: 'google-map-script',
@@ -184,7 +187,7 @@ export default function MapView({
 
       {places.map((place) => {
         const loc = place.geometry?.location;
-        if (!loc) return null;
+        if (!loc || (shouldFilterVisiblePlaces && !visiblePlaceIdSet.has(place.place_id))) return null;
         return (
           <Marker
             key={place.place_id || `${loc.lat()}-${loc.lng()}`}
