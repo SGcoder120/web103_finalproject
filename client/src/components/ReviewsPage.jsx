@@ -144,6 +144,9 @@ export default function ReviewsPage({
           </div>
         </div>
         <nav className="user-links">
+          <Link to="/reviews" className="details-link">
+            My Reviews
+          </Link>
           <Link to="/bookmarks" className="details-link">
             🔖 Bookmarks
           </Link>

@@ -7,6 +7,7 @@ import MapView from './components/MapView';
 import { authApi, mapsApi, reviewsApi } from './api';
 import ReviewsPage from './components/ReviewsPage';
 import BookmarksPage from './components/BookmarksPage';
+import MyReviewsPage from './components/MyReviewsPage';
 
 function toMiles(meters = 0) {
   return (meters * 0.000621371).toFixed(2);
@@ -301,6 +302,9 @@ function App() {
               <Link to="/bookmarks" className="details-link">
                 <BookmarkLabel>Bookmarks</BookmarkLabel>
               </Link>
+              <Link to="/reviews" className="details-link">
+                My Reviews
+              </Link>
               <button type="button" onClick={handleLogout} className="details-link">
                 Logout
               </button>
@@ -532,6 +536,10 @@ function App() {
             onToggleFavorite={toggleFavorite}
           />
         }
+      />
+      <Route
+        path="/reviews"
+        element={<MyReviewsPage user={user} onUserChange={setUser} />}
       />
     </Routes>
   );

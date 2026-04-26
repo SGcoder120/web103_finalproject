@@ -48,6 +48,7 @@ export const reviewsApi = {
   getLocationReviews: (locationId) => request(`/reviews/location/${locationId}`),
   getLocationsSummary: (locationIds) =>
     request(`/reviews/locations/summary?locationIds=${locationIds.join(',')}`),
+  getMyReviews: () => request('/reviews/mine'),
   getFavorites: () => request('/reviews/favorites'),
   addFavorite: (locationId) =>
     request(`/reviews/favorites/${locationId}`, {

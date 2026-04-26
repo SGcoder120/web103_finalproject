@@ -29,6 +29,9 @@ export default function BookmarksPage({
             </div>
           </div>
           <nav className="user-links">
+            <Link to="/reviews" className="details-link">
+              My Reviews
+            </Link>
             <Link to="/" className="details-link">
               Back to map
             </Link>
@@ -60,6 +63,9 @@ export default function BookmarksPage({
           </div>
         </div>
         <nav className="user-links">
+          <Link to="/reviews" className="details-link">
+            My Reviews
+          </Link>
           <Link to="/" className="details-link">
             Back to map
           </Link>

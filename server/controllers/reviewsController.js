@@ -167,6 +167,46 @@ export default {
     }
   },
 
+  async getMyReviews(req, res) {
+    const userId = req.user?.id
+    if (!userId) return res.status(401).json({ message: 'Unauthorized' })
+
+    try {
+      const result = await pool.query(
+        `SELECT
+          r.*,
+          l.name AS location_name,
+          l.address AS location_address,
+          l.google_place_id,
+          ROUND(location_stats.average_rating::numeric, 1) AS location_average_rating,
+          location_stats.review_count::int AS location_review_count
+         FROM reviews r
+         JOIN locations l ON l.id = r.location_id
+         LEFT JOIN (
+           SELECT
+             location_id,
+             AVG(rating) AS average_rating,
+             COUNT(*) AS review_count
+           FROM reviews
+           GROUP BY location_id
+         ) location_stats ON location_stats.location_id = l.id
+         WHERE r.user_id = $1
+         ORDER BY r.updated_at DESC, r.created_at DESC`,
+        [userId]
+      )
+
+      const normalizedReviews = result.rows.map((review) => ({
+        ...review,
+        image_urls: parseImageUrls(review.image_url),
+      }))
+
+      return res.status(200).json(normalizedReviews)
+    } catch (error) {
+      console.error('Error fetching user reviews:', error)
+      return res.status(500).json({ message: 'Failed to load your reviews' })
+    }
+  },
+
   async addFavorite(req, res) {
     const userId = req.user?.id
     const locationId = Number(req.params.locationId)

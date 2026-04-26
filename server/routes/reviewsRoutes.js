@@ -11,6 +11,7 @@ const requireAuth = (req, res, next) => {
 
 router.post('/locations/sync', reviewsController.syncLocations)
 router.get('/locations/summary', reviewsController.getLocationsWithReviewSummary)
+router.get('/mine', requireAuth, reviewsController.getMyReviews)
 router.get('/favorites', requireAuth, reviewsController.getFavorites)
 router.post('/favorites/:locationId', requireAuth, reviewsController.addFavorite)
 router.delete('/favorites/:locationId', requireAuth, reviewsController.removeFavorite)
