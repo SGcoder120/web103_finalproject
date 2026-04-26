@@ -80,7 +80,40 @@
 
 .card-footer {
   display: flex;
+  gap: 10px;
   justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.bookmark-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.04);
+  color: #f3f3f4;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.bookmark-btn:hover:not(:disabled) {
+  border-color: rgba(195, 160, 92, 0.6);
+  color: #f0dca7;
+}
+
+.bookmark-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.bookmark-btn--saved {
+  border-color: rgba(195, 160, 92, 0.7);
+  background: rgba(195, 160, 92, 0.14);
+  color: #f0dca7;
 }
 
 .result-details-link {

@@ -6,9 +6,19 @@ import royalFlushLogo from './assets/royal_flush_logo.png';
 import MapView from './components/MapView';
 import { authApi, mapsApi, reviewsApi } from './api';
 import ReviewsPage from './components/ReviewsPage';
+import BookmarksPage from './components/BookmarksPage';
 
 function toMiles(meters = 0) {
   return (meters * 0.000621371).toFixed(2);
+}
+
+function BookmarkLabel({ children }) {
+  return (
+    <>
+      <span className="bookmark-icon" aria-hidden="true">🔖</span>
+      <span>{children}</span>
+    </>
+  );
 }
 
 function App() {
@@ -21,6 +31,9 @@ function App() {
   const [addressInput, setAddressInput] = useState('');
   const [locationIdByPlaceId, setLocationIdByPlaceId] = useState({});
   const [reviewSummaryByLocation, setReviewSummaryByLocation] = useState({});
+  const [favoriteLocationIds, setFavoriteLocationIds] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+  const [favoriteLoadingId, setFavoriteLoadingId] = useState(null);
   const [ratingsReady, setRatingsReady] = useState(false);
   const syncDebounceRef = useRef(null);
 
@@ -43,6 +56,28 @@ function App() {
         setUser(null);
       });
   }, []);
+
+  const loadFavorites = useCallback(async () => {
+    try {
+      const data = await reviewsApi.getFavorites();
+      setFavorites(data);
+      setFavoriteLocationIds(data.map((favorite) => favorite.location_id));
+    } catch (favoriteError) {
+      console.warn('Favorites unavailable:', favoriteError?.message || favoriteError);
+      setFavorites([]);
+      setFavoriteLocationIds([]);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!user) return undefined;
+
+    const timer = window.setTimeout(() => {
+      loadFavorites();
+    }, 0);
+
+    return () => window.clearTimeout(timer);
+  }, [loadFavorites, user]);
 
   const resetPlaceData = () => {
     setRestrooms([]);
@@ -171,9 +206,33 @@ function App() {
     [locationIdByPlaceId, restrooms, reviewSummaryByLocation]
   );
 
+  const toggleFavorite = useCallback(async (locationId, shouldFavorite) => {
+    if (!locationId) return;
+    if (!user) {
+      window.location.href = authApi.githubLoginUrl;
+      return;
+    }
+
+    setFavoriteLoadingId(locationId);
+    try {
+      if (shouldFavorite) {
+        await reviewsApi.addFavorite(locationId);
+      } else {
+        await reviewsApi.removeFavorite(locationId);
+      }
+      await loadFavorites();
+    } catch (favoriteError) {
+      setError(favoriteError.message || 'Unable to update favorites');
+    } finally {
+      setFavoriteLoadingId(null);
+    }
+  }, [loadFavorites, user]);
+
   const handleLogout = async () => {
     await authApi.logout();
     setUser(null);
+    setFavorites([]);
+    setFavoriteLocationIds([]);
   };
 
   const showAllowAccessButton =
@@ -195,9 +254,14 @@ function App() {
         </div>
         <nav className="user-links">
           {user ? (
-            <button type="button" onClick={handleLogout} className="details-link">
-              Logout
-            </button>
+            <>
+              <Link to="/bookmarks" className="details-link">
+                <BookmarkLabel>Bookmarks</BookmarkLabel>
+              </Link>
+              <button type="button" onClick={handleLogout} className="details-link">
+                Logout
+              </button>
+            </>
           ) : (
             <>
               <a href={authApi.githubLoginUrl}>Log In</a>
@@ -240,6 +304,7 @@ function App() {
             onPlacesFound={handleMapPlacesFound}
             locationIdByPlaceId={locationIdByPlaceId}
             reviewSummaryByLocation={reviewSummaryByLocation}
+            favoriteLocationIds={favoriteLocationIds}
             isLoggedIn={Boolean(user)}
             onRequireLogin={() => {
               window.location.href = authApi.githubLoginUrl;
@@ -247,6 +312,8 @@ function App() {
             onLeaveReview={(locationId, openComposer) => {
               navigate(`/review/${locationId}${openComposer ? '?open=1' : ''}`);
             }}
+            onToggleFavorite={toggleFavorite}
+            favoriteLoadingId={favoriteLoadingId}
           />
         </div>
 
@@ -277,41 +344,84 @@ function App() {
       )}
 
       {ratingsReady && (
-        <section className="results-grid">
-          {restroomsWithMetadata.map((restroom, index) => (
-            <article key={restroom.placeId || index} className="result-card">
-              <div className="card-topline">
-                <span className="card-label">Restroom {index + 1}</span>
-                <span className="card-distance">{restroom.distanceMiles} mi away</span>
-              </div>
-              <h2 className="card-title">{restroom.name || 'Unnamed Bathroom'}</h2>
-              <p className="card-address">{restroom.address || 'Address unavailable'}</p>
-              <div className="card-meta">
-                <span className="card-meta-label">Community Rating</span>
-                <span className="card-meta-value">
-                  {restroom.summary?.average_rating != null
-                    ? `${restroom.summary.average_rating}/5 (${restroom.summary.review_count} reviews)`
-                    : 'No Reviews'}
-                </span>
-              </div>
+        <>
+          <section className="results-grid">
+            {restroomsWithMetadata.map((restroom, index) => {
+              const isFavorited = restroom.locationId ? favoriteLocationIds.includes(restroom.locationId) : false;
 
-              <div className="card-footer">
-                {restroom.locationId && (
-                  <Link to={`/review/${restroom.locationId}`} className="result-details-link">
-                    See Reviews
-                  </Link>
-                )}
-              </div>
-            </article>
-          ))}
-        </section>
+              return (
+                <article key={restroom.placeId || index} className="result-card">
+                  <div className="card-topline">
+                    <span className="card-label">Restroom {index + 1}</span>
+                    <span className="card-distance">{restroom.distanceMiles} mi away</span>
+                  </div>
+                  <h2 className="card-title">{restroom.name || 'Unnamed Bathroom'}</h2>
+                  <p className="card-address">{restroom.address || 'Address unavailable'}</p>
+                  <div className="card-meta">
+                    <span className="card-meta-label">Community Rating</span>
+                    <span className="card-meta-value">
+                      {restroom.summary?.average_rating != null
+                        ? `${restroom.summary.average_rating}/5 (${restroom.summary.review_count} reviews)`
+                        : 'No Reviews'}
+                    </span>
+                  </div>
+
+                  <div className="card-footer">
+                    {restroom.locationId && (
+                      <button
+                        type="button"
+                        className={isFavorited ? 'bookmark-btn bookmark-btn--saved' : 'bookmark-btn'}
+                        onClick={() => toggleFavorite(restroom.locationId, !isFavorited)}
+                        disabled={favoriteLoadingId === restroom.locationId}
+                      >
+                        <BookmarkLabel>
+                          {favoriteLoadingId === restroom.locationId
+                            ? 'Saving...'
+                            : !user
+                              ? 'Sign in to bookmark'
+                              : isFavorited
+                                ? 'Bookmarked'
+                                : 'Bookmark'}
+                        </BookmarkLabel>
+                      </button>
+                    )}
+                    {restroom.locationId && (
+                      <Link to={`/review/${restroom.locationId}`} className="result-details-link">
+                        See Reviews
+                      </Link>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
+          </section>
+        </>
       )}
     </div>
         }
       />
       <Route
         path="/review/:locationId"
-        element={<ReviewsPage user={user} onUserChange={setUser} />}
+        element={
+          <ReviewsPage
+            user={user}
+            onUserChange={setUser}
+            favoriteLocationIds={favoriteLocationIds}
+            onToggleFavorite={toggleFavorite}
+            favoriteLoadingId={favoriteLoadingId}
+          />
+        }
+      />
+      <Route
+        path="/bookmarks"
+        element={
+          <BookmarksPage
+            user={user}
+            favorites={favorites}
+            favoriteLoadingId={favoriteLoadingId}
+            onToggleFavorite={toggleFavorite}
+          />
+        }
       />
     </Routes>
   );

@@ -4,7 +4,13 @@ import { authApi, reviewsApi } from '../api';
 import './ReviewsPage.css';
 import royalFlushLogo from '../assets/royal_flush_logo.png';
 
-export default function ReviewsPage({ user, onUserChange }) {
+export default function ReviewsPage({
+  user,
+  onUserChange,
+  favoriteLocationIds,
+  onToggleFavorite,
+  favoriteLoadingId,
+}) {
   const { locationId } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -117,10 +123,15 @@ export default function ReviewsPage({ user, onUserChange }) {
   useEffect(() => {
     if (!showModal || loading || !user) return;
     if (editingReviewId || !userReview) return;
-    openEditModal(userReview);
+    const timer = window.setTimeout(() => {
+      openEditModal(userReview);
+    }, 0);
+
+    return () => window.clearTimeout(timer);
   }, [showModal, loading, user, userReview, editingReviewId]);
 
   const remainingImageSlots = Math.max(0, 2 - form.existingImageUrls.length);
+  const isFavorited = (favoriteLocationIds || []).includes(Number(locationId));
 
   return (
     <div className="app reviews-page">
@@ -133,6 +144,9 @@ export default function ReviewsPage({ user, onUserChange }) {
           </div>
         </div>
         <nav className="user-links">
+          <Link to="/bookmarks" className="details-link">
+            🔖 Bookmarks
+          </Link>
           <Link to="/" className="details-link">
             Back to map
           </Link>
@@ -152,6 +166,21 @@ export default function ReviewsPage({ user, onUserChange }) {
                 : 'No reviews yet'}
             </p>
             <div className="location-overview-actions">
+              <button
+                type="button"
+                onClick={() => onToggleFavorite(Number(locationId), !isFavorited)}
+                className={isFavorited ? 'review-action-btn review-action-btn--primary' : 'review-action-btn'}
+                disabled={favoriteLoadingId === Number(locationId)}
+              >
+                🔖{' '}
+                {favoriteLoadingId === Number(locationId)
+                  ? 'Saving...'
+                  : !user
+                    ? 'Sign in to bookmark'
+                    : isFavorited
+                      ? 'Bookmarked'
+                      : 'Bookmark restroom'}
+              </button>
               {user ? (
                 <button
                   type="button"

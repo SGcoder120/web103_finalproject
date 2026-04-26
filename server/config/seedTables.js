@@ -1,5 +1,6 @@
 import './loadEnv.js'
 import { pool } from './database.js'
+import { fileURLToPath } from 'url'
 
 const seedUsersTable = async () => {
   try {
@@ -83,12 +84,41 @@ const seedReviewImagesTable = async () => {
   }
 }
 
-const seedAllTables = async () => {
+const seedFavoritesTable = async () => {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS favorites (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        location_id INTEGER NOT NULL REFERENCES locations(id) ON DELETE CASCADE,
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+    `)
+    await pool.query(`
+      CREATE UNIQUE INDEX IF NOT EXISTS favorites_user_location_unique_idx
+      ON favorites (user_id, location_id);
+    `)
+    console.log('Favorites table created successfully.')
+  } catch (error) {
+    console.log('Error seeding favorites table:', error)
+    throw error
+  }
+}
+
+export const seedAllTables = async () => {
   await seedUsersTable()
   await seedLocationsTable()
   await seedReviewsTable()
   await seedReviewImagesTable()
+  await seedFavoritesTable()
   console.log('All tables seeded in correct order.')
 }
 
-seedAllTables()
+const currentFilePath = fileURLToPath(import.meta.url)
+
+if (process.argv[1] === currentFilePath) {
+  seedAllTables().catch((error) => {
+    console.error('Database seeding failed:', error)
+    process.exit(1)
+  })
+}

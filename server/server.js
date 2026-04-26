@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url'
 import { GitHub } from './config/auth.js'
 import authRoutes from './routes/auth.js'
 import reviewsRoutes from './routes/reviewsRoutes.js'
+import { seedAllTables } from './config/seedTables.js'
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -77,6 +78,13 @@ app.get('/api/geocode', async (req, res) => {
   }
 })
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+seedAllTables()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error('Failed to initialize database tables:', error)
+    process.exit(1)
+  })

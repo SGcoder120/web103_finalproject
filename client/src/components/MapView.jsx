@@ -25,9 +25,12 @@ export default function MapView({
   onPlacesFound,
   locationIdByPlaceId,
   reviewSummaryByLocation,
+  favoriteLocationIds,
   onLeaveReview,
   isLoggedIn,
   onRequireLogin,
+  onToggleFavorite,
+  favoriteLoadingId,
 }) {
   const [places, setPlaces] = useState([]);
   const [selectedPlace, setSelectedPlace] = useState(null);
@@ -247,12 +250,30 @@ export default function MapView({
               const placeId = selectedPlace.place_id;
               const locationId = placeId ? locationIdByPlaceId?.[placeId] : null;
               const summary = locationId ? reviewSummaryByLocation?.[locationId] : null;
+              const isFavorited = locationId ? favoriteLocationIds?.includes(locationId) : false;
               return (
                 <div style={{ marginTop: '10px' }}>
                   {summary?.average_rating != null && (
                     <p style={{ margin: '0 0 6px', fontSize: '0.8rem', color: '#444' }}>
                       {summary.review_count} review{summary.review_count === 1 ? '' : 's'}
                     </p>
+                  )}
+                  {locationId && (
+                    <button
+                      type="button"
+                      style={{ marginRight: '8px' }}
+                      onClick={() => onToggleFavorite?.(locationId, !isFavorited)}
+                      disabled={favoriteLoadingId === locationId}
+                    >
+                      🔖{' '}
+                      {favoriteLoadingId === locationId
+                        ? 'Saving...'
+                        : !isLoggedIn
+                          ? 'Sign in to bookmark'
+                          : isFavorited
+                            ? 'Bookmarked'
+                            : 'Bookmark'}
+                    </button>
                   )}
                   <button
                     type="button"

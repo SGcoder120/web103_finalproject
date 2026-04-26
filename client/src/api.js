@@ -48,6 +48,15 @@ export const reviewsApi = {
   getLocationReviews: (locationId) => request(`/reviews/location/${locationId}`),
   getLocationsSummary: (locationIds) =>
     request(`/reviews/locations/summary?locationIds=${locationIds.join(',')}`),
+  getFavorites: () => request('/reviews/favorites'),
+  addFavorite: (locationId) =>
+    request(`/reviews/favorites/${locationId}`, {
+      method: 'POST',
+    }),
+  removeFavorite: (locationId) =>
+    request(`/reviews/favorites/${locationId}`, {
+      method: 'DELETE',
+    }),
   createReview: (locationId, payload) =>
     request(`/reviews/location/${locationId}`, {
       method: 'POST',

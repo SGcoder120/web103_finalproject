@@ -135,6 +135,83 @@ export default {
     }
   },
 
+  async getFavorites(req, res) {
+    const userId = req.user?.id
+    if (!userId) return res.status(401).json({ message: 'Unauthorized' })
+
+    try {
+      const result = await pool.query(
+        `SELECT
+          f.location_id,
+          f.created_at AS favorited_at,
+          l.google_place_id,
+          l.name,
+          l.address,
+          l.latitude,
+          l.longitude,
+          ROUND(AVG(r.rating)::numeric, 1) AS average_rating,
+          COUNT(r.id)::int AS review_count
+         FROM favorites f
+         JOIN locations l ON l.id = f.location_id
+         LEFT JOIN reviews r ON r.location_id = l.id
+         WHERE f.user_id = $1
+         GROUP BY f.location_id, f.created_at, l.id
+         ORDER BY f.created_at DESC`,
+        [userId]
+      )
+
+      return res.status(200).json(result.rows)
+    } catch (error) {
+      console.error('Error fetching favorites:', error)
+      return res.status(500).json({ message: 'Failed to load favorites' })
+    }
+  },
+
+  async addFavorite(req, res) {
+    const userId = req.user?.id
+    const locationId = Number(req.params.locationId)
+    if (!userId) return res.status(401).json({ message: 'Unauthorized' })
+    if (!Number.isInteger(locationId) || locationId < 1) {
+      return res.status(400).json({ message: 'Valid locationId is required' })
+    }
+
+    try {
+      const locationExists = await pool.query('SELECT id FROM locations WHERE id = $1', [locationId])
+      if (!locationExists.rows[0]) {
+        return res.status(404).json({ message: 'Location not found' })
+      }
+
+      await pool.query(
+        `INSERT INTO favorites (user_id, location_id)
+         VALUES ($1, $2)
+         ON CONFLICT (user_id, location_id) DO NOTHING`,
+        [userId, locationId]
+      )
+
+      return res.status(201).json({ location_id: locationId, is_favorited: true })
+    } catch (error) {
+      console.error('Error adding favorite:', error)
+      return res.status(500).json({ message: 'Failed to save favorite' })
+    }
+  },
+
+  async removeFavorite(req, res) {
+    const userId = req.user?.id
+    const locationId = Number(req.params.locationId)
+    if (!userId) return res.status(401).json({ message: 'Unauthorized' })
+    if (!Number.isInteger(locationId) || locationId < 1) {
+      return res.status(400).json({ message: 'Valid locationId is required' })
+    }
+
+    try {
+      await pool.query('DELETE FROM favorites WHERE user_id = $1 AND location_id = $2', [userId, locationId])
+      return res.status(200).json({ location_id: locationId, is_favorited: false })
+    } catch (error) {
+      console.error('Error removing favorite:', error)
+      return res.status(500).json({ message: 'Failed to remove favorite' })
+    }
+  },
+
   async createReview(req, res) {
     const { locationId } = req.params
     const { rating, description } = req.body
