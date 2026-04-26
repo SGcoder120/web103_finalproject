@@ -12,6 +12,11 @@ function toMiles(meters = 0) {
   return (meters * 0.000621371).toFixed(2);
 }
 
+function getRankingScore(summary) {
+  if (!summary?.review_count || summary.average_rating == null) return null;
+  return Number(summary.average_rating) * 100 + Number(summary.review_count);
+}
+
 function BookmarkLabel({ children }) {
   return (
     <>
@@ -206,6 +211,44 @@ function App() {
     [locationIdByPlaceId, restrooms, reviewSummaryByLocation]
   );
 
+  const rankedRestrooms = useMemo(() => {
+    return restroomsWithMetadata
+      .filter((restroom) => restroom.summary?.average_rating != null && restroom.summary?.review_count > 0)
+      .map((restroom) => ({
+        ...restroom,
+        rankingScore: getRankingScore(restroom.summary),
+      }))
+      .sort((a, b) => {
+        if (b.rankingScore !== a.rankingScore) return b.rankingScore - a.rankingScore;
+        if (Number(b.summary.review_count) !== Number(a.summary.review_count)) {
+          return Number(b.summary.review_count) - Number(a.summary.review_count);
+        }
+        return Number(b.summary.average_rating) - Number(a.summary.average_rating);
+      })
+      .map((restroom, index) => ({
+        ...restroom,
+        rank: index + 1,
+      }));
+  }, [restroomsWithMetadata]);
+
+  const topRankedRestrooms = useMemo(
+    () => rankedRestrooms.slice(0, 3),
+    [rankedRestrooms]
+  );
+
+  const lowestRankedRestroom = useMemo(
+    () =>
+      rankedRestrooms.length > 0
+        ? [...rankedRestrooms].sort((a, b) => {
+            if (Number(a.summary.average_rating) !== Number(b.summary.average_rating)) {
+              return Number(a.summary.average_rating) - Number(b.summary.average_rating);
+            }
+            return Number(b.summary.review_count) - Number(a.summary.review_count);
+          })[0]
+        : null,
+    [rankedRestrooms]
+  );
+
   const toggleFavorite = useCallback(async (locationId, shouldFavorite) => {
     if (!locationId) return;
     if (!user) {
@@ -345,9 +388,69 @@ function App() {
 
       {ratingsReady && (
         <>
+          {rankedRestrooms.length > 0 && (
+            <section className="ranking-panel">
+              <div className="ranking-panel-header">
+                <div>
+                  <p className="ranking-eyebrow">Restroom rankings</p>
+                </div>
+                <p className="ranking-note">
+                  Ranked from real reviews, with more-reviewed restrooms breaking ties.
+                </p>
+              </div>
+
+              <div className="ranking-highlights">
+                {topRankedRestrooms[0] && (
+                  <article className="ranking-highlight-card ranking-highlight-card--best">
+                    <span className="ranking-highlight-label">Best nearby</span>
+                    <h3>{topRankedRestrooms[0].name}</h3>
+                    <p>{topRankedRestrooms[0].address || 'Address unavailable'}</p>
+                    <strong>
+                      #{topRankedRestrooms[0].rank} ranked • {topRankedRestrooms[0].summary.average_rating}/5
+                    </strong>
+                  </article>
+                )}
+
+                {lowestRankedRestroom && (
+                  <article className="ranking-highlight-card ranking-highlight-card--worst">
+                    <span className="ranking-highlight-label">Needs work</span>
+                    <h3>{lowestRankedRestroom.name}</h3>
+                    <p>{lowestRankedRestroom.address || 'Address unavailable'}</p>
+                    <strong>
+                      {lowestRankedRestroom.summary.average_rating}/5 from {lowestRankedRestroom.summary.review_count} review{lowestRankedRestroom.summary.review_count === 1 ? '' : 's'}
+                    </strong>
+                  </article>
+                )}
+              </div>
+
+              <div className="ranking-list">
+                {topRankedRestrooms.map((restroom) => (
+                  <article key={restroom.locationId} className="ranking-item">
+                    <div className="ranking-position">#{restroom.rank}</div>
+                    <div className="ranking-copy">
+                      <p className="ranking-item-name">{restroom.name}</p>
+                      <p className="ranking-item-meta">
+                        {restroom.summary.average_rating}/5 • {restroom.summary.review_count} review{restroom.summary.review_count === 1 ? '' : 's'} • {restroom.distanceMiles} mi away
+                      </p>
+                    </div>
+                    {restroom.locationId && (
+                      <Link to={`/review/${restroom.locationId}`} className="saved-restroom-link">
+                        View
+                      </Link>
+                    )}
+                  </article>
+                ))}
+              </div>
+            </section>
+          )}
+
           <section className="results-grid">
             {restroomsWithMetadata.map((restroom, index) => {
               const isFavorited = restroom.locationId ? favoriteLocationIds.includes(restroom.locationId) : false;
+              const ranking = restroom.locationId
+                ? rankedRestrooms.find((rankedRestroom) => rankedRestroom.locationId === restroom.locationId)
+                : null;
+              const isWorst = lowestRankedRestroom?.locationId === restroom.locationId;
 
               return (
                 <article key={restroom.placeId || index} className="result-card">
@@ -365,6 +468,13 @@ function App() {
                         : 'No Reviews'}
                     </span>
                   </div>
+                  {ranking && (
+                    <div className="ranking-badge-row">
+                      <span className="ranking-badge">Rank #{ranking.rank}</span>
+                      {ranking.rank === 1 && <span className="ranking-badge ranking-badge--best">Top rated</span>}
+                      {isWorst && <span className="ranking-badge ranking-badge--worst">Needs work</span>}
+                    </div>
+                  )}
 
                   <div className="card-footer">
                     {restroom.locationId && (

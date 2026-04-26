@@ -236,6 +236,148 @@
   font-weight: 600;
 }
 
+.ranking-panel {
+  width: min(100%, 880px);
+  margin: 0 auto 18px;
+  padding: 22px;
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at top left, rgba(217, 187, 125, 0.22), transparent 34%),
+    linear-gradient(160deg, #101011 0%, #1c1c1f 100%);
+  border: 1px solid rgba(195, 160, 92, 0.28);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.22);
+}
+
+.ranking-panel-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-end;
+  margin-bottom: 16px;
+}
+
+.ranking-eyebrow {
+  margin: 0 0 6px;
+  color: #d9bb7d;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.ranking-title {
+  margin: 0;
+  color: #fafaf9;
+  font-size: clamp(1.45rem, 2.8vw, 2rem);
+}
+
+.ranking-note {
+  margin: 0;
+  max-width: 280px;
+  color: #b7b7bc;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.ranking-highlights {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.ranking-highlight-card {
+  padding: 18px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: #f1f1f2;
+}
+
+.ranking-highlight-card h3 {
+  margin: 0 0 8px;
+  font-size: 1.2rem;
+}
+
+.ranking-highlight-card p,
+.ranking-highlight-card strong {
+  display: block;
+}
+
+.ranking-highlight-card p {
+  margin: 0 0 10px;
+  color: #b7b7bc;
+  line-height: 1.5;
+}
+
+.ranking-highlight-card strong {
+  color: #f0dca7;
+}
+
+.ranking-highlight-card--best {
+  background: linear-gradient(160deg, rgba(217, 187, 125, 0.18), rgba(255, 255, 255, 0.04));
+}
+
+.ranking-highlight-card--worst {
+  background: linear-gradient(160deg, rgba(181, 106, 106, 0.22), rgba(255, 255, 255, 0.04));
+}
+
+.ranking-highlight-label {
+  display: inline-flex;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f7f7f8;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+}
+
+.ranking-list {
+  display: grid;
+  gap: 10px;
+}
+
+.ranking-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ranking-position {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: rgba(217, 187, 125, 0.14);
+  color: #f0dca7;
+  font-weight: 800;
+}
+
+.ranking-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.ranking-item-name {
+  margin: 0 0 5px;
+  color: #f8f8f8;
+  font-weight: 700;
+}
+
+.ranking-item-meta {
+  margin: 0;
+  color: #b7b7bc;
+  font-size: 13px;
+}
+
 .saved-restrooms-panel {
   width: min(100%, 880px);
   margin: 0 auto 18px;
@@ -385,6 +527,18 @@
 
   .location-controls {
     flex-direction: column;
+  }
+
+  .ranking-panel-header,
+  .ranking-item,
+  .ranking-highlights {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ranking-note {
+    max-width: none;
   }
 
   .saved-restrooms-header,

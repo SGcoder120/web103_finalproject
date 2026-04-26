@@ -85,6 +85,37 @@
   flex-wrap: wrap;
 }
 
+.ranking-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: -4px 0 16px;
+}
+
+.ranking-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #e5e5e7;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ranking-badge--best {
+  background: rgba(217, 187, 125, 0.16);
+  border-color: rgba(217, 187, 125, 0.4);
+  color: #f0dca7;
+}
+
+.ranking-badge--worst {
+  background: rgba(181, 106, 106, 0.16);
+  border-color: rgba(181, 106, 106, 0.4);
+  color: #f2b6b6;
+}
+
 .bookmark-btn {
   display: inline-flex;
   align-items: center;
