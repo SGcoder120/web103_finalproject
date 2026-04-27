@@ -4,7 +4,7 @@ CodePath WEB103 Final Project
 
 Designed and developed by: John Ortega, Shivesh Gupta, Christopher Persaud, Huyen Huynh
 
-🔗 Link to deployed app:
+🔗 Link to deployed app: https://web103-finalproject-royalflush-1.onrender.com/
 
 ## About
 
