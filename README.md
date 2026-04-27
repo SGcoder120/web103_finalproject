@@ -66,4 +66,100 @@ Lets users save frequently used or highly rated restrooms for quick access later
 
 ## Installation Instructions
 
-[instructions go here]
+### Prerequisites
+
+- Node.js (version 18 or higher)
+- npm (comes with Node.js)
+- PostgreSQL database (local or cloud instance like Render, Supabase, etc.)
+- GitHub OAuth App (for user authentication)
+- Google Maps API key (for location services)
+
+### Setup Instructions
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd web103_finalproject-RoyalFlush
+   ```
+
+2. **Set up the server**
+   ```bash
+   cd server
+   
+   # Install dependencies
+   npm install
+   
+   # Create .env file with required environment variables
+   cp .env.example .env  # If .env.example exists, otherwise create .env manually
+   ```
+
+3. **Configure environment variables**
+   
+   Edit the `server/.env` file with your actual values:
+   ```env
+   # Database configuration
+   PGDATABASE=your_database_name
+   PGHOST=your_database_host
+   PGPASSWORD=your_database_password
+   PGPORT=5432
+   PGUSER=your_database_user
+   
+   # GitHub OAuth (create an OAuth app at https://github.com/settings/applications/new)
+   GITHUB_CLIENT_ID=your_github_client_id
+   GITHUB_CLIENT_SECRET=your_github_client_secret
+   GITHUB_CALLBACK_URL=http://localhost:3001/auth/github/callback
+   
+   # Session secret
+   SECRET_KEY=your_random_secret_key
+   
+   # Google Maps API key (get from https://console.cloud.google.com/)
+   GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+   
+   # Server port (optional, defaults to 3001)
+   PORT=3001
+   ```
+
+4. **Set up the database**
+   ```bash
+   # Reset and seed the database with initial data
+   npm run reset
+   npm run seed
+   ```
+
+5. **Set up the client**
+   ```bash
+   cd ../client
+   
+   # Install dependencies
+   npm install
+   ```
+
+6. **Start the application**
+
+   Open two terminal windows:
+
+   **Terminal 1 - Start the server:**
+   ```bash
+   cd server
+   npm run dev  # For development with auto-restart
+   # or
+   npm start    # For production
+   ```
+
+   **Terminal 2 - Start the client:**
+   ```bash
+   cd client
+   npm run dev  # Starts development server on http://localhost:5173
+   ```
+
+7. **Access the application**
+   
+   Open your browser and navigate to `http://localhost:5173`
+
+### Additional Notes
+
+- The server runs on port 3001 by default
+- The client development server runs on port 5173
+- Make sure your PostgreSQL database is running and accessible
+- For production deployment, you'll need to update the `API_URL` in `client/src/App.jsx` and `client/src/api.js` with your production server URL
+- Ensure your GitHub OAuth app is configured with the correct callback URL for your environment
