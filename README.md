@@ -5,6 +5,7 @@ CodePath WEB103 Final Project
 Designed and developed by: John Ortega, Shivesh Gupta, Christopher Persaud, Huyen Huynh
 
 🔗 Link to deployed app: https://web103-finalproject-royalflush-1.onrender.com/
+🔗 Link to demo video: https://imgur.com/a/web103-royalflush-demo-FTmpNze
 
 ## About
 
@@ -30,19 +31,19 @@ Backend: Node.js, Express.js
 
 Based on the users current location, the app fetches and locates all of the nearest public bathrooms in the area.
 
-https://imgur.com/a/web-103-restroom-find-feature-coaMME3
+https://imgur.com/a/web103-royalflush-demo-FTmpNze
 
 ### User Reviews & Rating
 
 Allows users to submit ratings, upload images, and write descriptions about restroom conditions such as cleanliness and accessibility.
 
-[gif goes here]
+https://imgur.com/a/web103-royalflush-demo-FTmpNze
 
 ### Restroom Ranking System
 
 Aggregates user feedback to rank restrooms, highlighting the best and worst options based on real user experiences.
 
-[Insert GIF of ranked list or leaderboard view here]
+https://imgur.com/a/web103-royalflush-demo-FTmpNze
 
 ### [ADDITIONAL FEATURES GO HERE - ADD ALL FEATURES HERE IN THE FORMAT ABOVE; you will check these off and add gifs as you complete them]
 
@@ -50,19 +51,19 @@ Aggregates user feedback to rank restrooms, highlighting the best and worst opti
 
 Allow for users to filter bathrooms by specific preferences such as distance, location, etc..
 
-[gif goes here]
+https://imgur.com/a/web103-royalflush-demo-FTmpNze
 
 ### User Authentication
 
 Allows users to create accounts, log in, and manage their reviews, ensuring accountability and preventing spam or duplicate submissions.
 
-[Insert GIF of login/signup flow here]
+https://imgur.com/a/web103-royalflush-demo-FTmpNze
 
 ### Favorites & Bookmarks
 
 Lets users save frequently used or highly rated restrooms for quick access later, improving convenience for repeat visits.
 
-[Insert GIF of favoriting/bookmarking feature here]
+https://imgur.com/a/web103-royalflush-demo-FTmpNze
 
 ## Installation Instructions
 
