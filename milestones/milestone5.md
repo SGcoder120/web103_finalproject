@@ -53,8 +53,8 @@ Complete the checklist below detailing each baseline, custom, and stretch featur
 
 - [x] The project gracefully handles errors
 - [x] The project includes a one-to-one database relationship
-- [x] The project includes a slide-out pane or modal as appropriate for your use case that pops up and covers the page content without navigating away from the current page
-- [x] The project includes a unique field within the join table
+- [ ] The project includes a slide-out pane or modal as appropriate for your use case that pops up and covers the page content without navigating away from the current page
+- [ ] The project includes a unique field within the join table
 - [x] The project includes a custom non-RESTful route with corresponding controller actions
 - [x] The user can filter or sort items based on particular criteria as appropriate for your use case
 - [x] Data is automatically generated in response to a certain event or user action. Examples include generating a default inventory for a new user starting a game or creating a starter set of tasks for a user creating a new task app account
@@ -67,8 +67,8 @@ Complete the checklist below detailing each baseline, custom, and stretch featur
 
 - [x] A subset of pages require the user to log in before accessing the content
   - [x] Users can log in and log out via GitHub OAuth with Passport.js
-- [x] Restrict available user options dynamically, such as restricting available purchases based on a user's currency
-- [x] Show a spinner while a page or page element is loading
+- [ ] Restrict available user options dynamically, such as restricting available purchases based on a user's currency
+- [ ] Show a spinner while a page or page element is loading
 - [x] Disable buttons and inputs during the form submission process
 - [x] Disable buttons after they have been clicked
   - *At least 75% of buttons in your app must exhibit this behavior to receive full credit*
@@ -80,7 +80,7 @@ Complete the checklist below detailing each baseline, custom, and stretch featur
 
 ## Final Demo GIF
 
-🔗 [Here's a GIF walkthrough of the final project](https://imgur.com/a/web103-final-demo-gif-placeholder)
+https://imgur.com/a/web103-royalflush-demo-FTmpNze
 
 ## Reflection
 
