@@ -86,20 +86,20 @@ https://imgur.com/a/web103-royalflush-demo-FTmpNze
 
 ### 1. What went well during this unit?
 
-The deployment process went smoothly once we resolved the environment variable loading issues. We successfully deployed both the frontend and backend to Render, and all features are working correctly in production. The API configuration updates we made ensured proper communication between the client and server in both development and production environments.
+Implementing the features were quite easy as nearly every feature implemented was pretty well executed. Every issue was resolved shortly afterwards.
 
 ### 2. What were some challenges your group faced in this unit?
 
-The main challenge was getting the environment variables to load properly in the production environment. We initially had issues with the async dotenv loading in the server startup, which required refactoring the loadEnv.js file to properly await the configuration before importing authentication modules.
+The biggest headache was environment variables in production. Our async dotenv setup wasn't loading before the auth modules initialized, so we had to refactor loadEnv.js to fix the ordering.
 
 ### 3. What were some of the highlights or achievements that you are most proud of in this project?
 
-I'm most proud of successfully implementing a comprehensive full-stack application that solves a real-world problem. The combination of Google Maps integration, user authentication, image uploads, and a robust review system creates a valuable tool for finding reliable restrooms. The database design with proper relationships and the clean API architecture demonstrate solid backend development skills.
+Just seeing it all come together — Google Maps, authentication, image uploads, and a review system working as one cohesive app.
 
 ### 4. Reflecting on your web development journey so far, how have you grown since the beginning of the course?
 
-I've grown tremendously in understanding full-stack development, from setting up databases and APIs to building interactive React applications. I now have experience with deployment, authentication systems, file uploads, and integrating third-party APIs. The project taught me the importance of proper error handling, user experience design, and maintaining clean, scalable code architecture.
+I went from barely understanding how frontends and backends talk to each other, to building and deploying a full-stack app with auth, file storage, and third-party APIs. That gap feels huge looking back.
 
 ### 5. Looking ahead, what are your goals related to web development, and what steps do you plan to take to achieve them?
 
-My goals include deepening my knowledge of modern web technologies like Next.js, TypeScript, and cloud services. I plan to build more complex applications, contribute to open-source projects, and potentially pursue a career in web development. I'll continue learning through personal projects, online courses, and staying updated with industry trends.
+I want to get comfortable with Next.js and TypeScript, and build things that are more complex and polished. Using a lot of online resources and courses will help.
