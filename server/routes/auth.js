@@ -37,11 +37,18 @@ router.get('/github',
     })
 )
 
-router.get('/github/callback', 
+router.get('/github/callback',
+    (req, res, next) => {
+      console.log('GitHub callback hit:', {
+        query: req.query,
+        sessionID: req.sessionID
+      });
+      next();
+    },
     passport.authenticate('github', {
-        successRedirect: 'https://web103-finalproject-royalflush-1.onrender.com/',
-        failureRedirect: 'https://web103-finalproject-royalflush-1.onrender.com/'
+      successRedirect: 'https://web103-finalproject-royalflush-1.onrender.com/',
+      failureRedirect: 'https://web103-finalproject-royalflush-1.onrender.com/'
     })
-)
+  );
 
 export default router
