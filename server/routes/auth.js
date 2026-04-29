@@ -39,8 +39,8 @@ router.get('/github',
 
 router.get('/github/callback', 
     passport.authenticate('github', {
-        successRedirect: 'https://web103-finalproject-royalflush-1.onrender.com/',
-        failureRedirect: 'https://web103-finalproject-royalflush-1.onrender.com/'
+        successRedirect: 'http://localhost:5173',
+        failureRedirect: 'http://localhost:5173'
     })
 )
 
